@@ -60,6 +60,9 @@ class Checkpoint:
 
 	def getCheckpointLogKeys(self):
 		return self.checkpointLogs.keys()
-	
+
+	def getCheckpointKeys(self):
+		return self.checkpointState.keys()
+
 	def getCheckpoints(self, key):
 		return self.checkpointState[key]

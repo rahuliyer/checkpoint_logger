@@ -39,7 +39,8 @@ class TestCheckpoint(unittest.TestCase):
 		x.writeCheckpoint(TestCheckpoint.TEST_KEY, "b", 3)
 
 		x.releaseCheckpointLog(TestCheckpoint.TEST_KEY)
-		
+
+		self.assertEqual(sorted(x.getCheckpointKeys()), ["a", "b"])
 		self.assertEqual(x.getCheckpoints("b"), [3])
 		self.assertEqual(x.getCheckpoints("a"), [1, 2])
 
