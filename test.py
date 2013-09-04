@@ -30,6 +30,20 @@ class TestCheckpoint(unittest.TestCase):
 		x.releaseCheckpointLog(TestCheckpoint.TEST_KEY)
 		self.assertFalse(TestCheckpoint.TEST_KEY in x.getCheckpointLogKeys())
 
+	def testCheckpointWrite(self):
+		x = Checkpoint(TestCheckpoint.TEST_DIR)
+		x.createCheckpointLog(TestCheckpoint.TEST_KEY)
+
+		x.writeCheckpoint(TestCheckpoint.TEST_KEY, "a", 1)
+		x.writeCheckpoint(TestCheckpoint.TEST_KEY, "a", 2)
+		x.writeCheckpoint(TestCheckpoint.TEST_KEY, "b", 3)
+
+		x.releaseCheckpointLog(TestCheckpoint.TEST_KEY)
+		
+		self.assertEqual(x.getCheckpoints("b"), [3])
+		self.assertEqual(x.getCheckpoints("a"), [1, 2])
+
+
 if __name__ == "__main__":
 	unittest.main()
 

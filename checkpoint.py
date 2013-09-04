@@ -37,6 +37,8 @@ class Checkpoint:
 		for i in checkpoints.keys():
 			self.updateState(i, checkpoints[i])
 
+		f.close()
+
 	def createCheckpointLog(self, key):
 		checkpoint_file = key + str(int(time.time()))
 		f = open(self.checkpoint_dir + "/" + checkpoint_file, "wb+")
@@ -50,6 +52,10 @@ class Checkpoint:
 	def writeCheckpoint(self, log_key, key, value):
 		f = self.checkpointLogs[log_key]
 		f.write(json.dumps({key: value}))
+		self.updateState(key, value)
 
 	def getCheckpointLogKeys(self):
 		return self.checkpointLogs.keys()
+	
+	def getCheckpoints(self, key):
+		return self.checkpointState[key]
