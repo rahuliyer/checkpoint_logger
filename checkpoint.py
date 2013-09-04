@@ -30,12 +30,16 @@ class Checkpoint:
 		self.checkpointState[key] = state
 
 	def processFiles(self, file):
-		f = open(file, "rb")
+		f = open(file, "r")
 		
-		checkpoints = json.loads(f.read())
+		while True:
+			line = f.readline()
+			if line == '':
+				break
 
-		for i in checkpoints.keys():
-			self.updateState(i, checkpoints[i])
+			checkpoint = json.loads(line)
+			key = checkpoint.keys()[0]
+			self.updateState(key, checkpoint[key])
 
 		f.close()
 
@@ -51,7 +55,7 @@ class Checkpoint:
 	
 	def writeCheckpoint(self, log_key, key, value):
 		f = self.checkpointLogs[log_key]
-		f.write(json.dumps({key: value}))
+		f.write(json.dumps({key: value}) + "\n")
 		self.updateState(key, value)
 
 	def getCheckpointLogKeys(self):
