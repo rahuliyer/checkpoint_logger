@@ -9,6 +9,7 @@ from checkpoint import Checkpoint
 class TestCheckpoint(unittest.TestCase):
 	TEST_DIR = "/tmp/checkpoint_test"
 	TEST_KEY = "test_key"
+	TEST_KEY2 = "test_key2"
 
 	def setUp(self):
 		os.mkdir(TestCheckpoint.TEST_DIR)
@@ -47,12 +48,14 @@ class TestCheckpoint(unittest.TestCase):
 	def testCheckpointRestart(self):
 		x = Checkpoint(TestCheckpoint.TEST_DIR)
 		x.createCheckpointLog(TestCheckpoint.TEST_KEY)
+		x.createCheckpointLog(TestCheckpoint.TEST_KEY2)
 
 		x.writeCheckpoint(TestCheckpoint.TEST_KEY, "a", 1)
 		x.writeCheckpoint(TestCheckpoint.TEST_KEY, "a", 2)
-		x.writeCheckpoint(TestCheckpoint.TEST_KEY, "b", 3)
+		x.writeCheckpoint(TestCheckpoint.TEST_KEY2, "b", 3)
 
 		x.releaseCheckpointLog(TestCheckpoint.TEST_KEY)
+		x.releaseCheckpointLog(TestCheckpoint.TEST_KEY2)
 		
 		y = Checkpoint(TestCheckpoint.TEST_DIR)
 		self.assertEqual(y.getCheckpoints("b"), [3])
