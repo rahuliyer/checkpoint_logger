@@ -65,4 +65,7 @@ class Checkpoint:
 		return self.checkpointState.keys()
 
 	def getCheckpoints(self, key):
+		if key not in self.checkpointState:
+			return []
+
 		return self.checkpointState[key]
